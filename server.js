@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const dotenv = require('dotenv');
 const cors = require('cors');
+const mongoose = require('mongoose');
 
 dotenv.config();
 
@@ -18,4 +19,14 @@ if (process.env.NODE_ENV === 'local') {
 
 const PORT = process.env.PORT || 5501;
 
-app.listen(PORT, () => console.log(`Server is running at ${PORT}`));
+console.log('process.env.PORT', process.env.PORT);
+
+// app.listen(PORT, () => console.log(`Server is running at ${PORT}`));
+// Import Database
+mongoose.connect(process.env.MONGO_DB_URI)
+    .then(() => {
+        app.listen(PORT, () => {
+            console.log(`Database connected to ${PORT}`);
+        })
+    })
+    .catch((err) => console.log(err));
