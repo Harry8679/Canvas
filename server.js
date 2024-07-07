@@ -4,6 +4,7 @@ const dotenv = require('dotenv');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const path = require('path');
+const dbConnect = require('./config/database'); 
 
 dotenv.config();
 
@@ -18,23 +19,10 @@ if (process.env.NODE_ENV === 'local') {
     }));
 }
 
-const dbConnect = async () => {
-    try {
-        if (process.env.NODE_ENV !== 'local') {
-            await mongoose.connect(process.env.LOCAL_DB_URI);
-            console.log('Local Database Is Connected');
-        } else {
-            await mongoose.connect(process.env.LOCAL_DB_URI);
-            console.log('Production Database Is Connected');
-        }
-    } catch (error) {
-        console.log('Database connection Failed');
-    };
-}
-
-const PORT = process.env.PORT || 5501;
-
 dbConnect();
+
+// dbConnect();
+const PORT = process.env.PORT || 5501;
 
 console.log('process.env.PORT', process.env.PORT);
 

@@ -3,16 +3,20 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 
-// console.log('process.env.MONGO_DB_URI', process.env.MONGO_DB_URI);
-
-const connectDatabase = () => { 
-    mongoose.connect(process.env.MONGO_DB_URI)
-    .then(() => {
-        app.listen(PORT, () => {
-            console.log(`Database connected to ${process.env.PORT}`);
-        })
-    })
-    .catch((err) => console.log(err));
+dbConnect = async () => {
+    try {
+        if (process.env.NODE_ENV !== 'local') {
+            await mongoose.connect(process.env.LOCAL_DB_URI);
+            console.log('Local Database Is Connected');
+        } else {
+            await mongoose.connect(process.env.LOCAL_DB_URI);
+            console.log('Production Database Is Connected');
+        }
+    } catch (error) {
+        console.log('Database connection Failed');
+    };
 }
 
-module.exports = connectDatabase;
+// dbConnect();
+
+module.exports = dbConnect;
